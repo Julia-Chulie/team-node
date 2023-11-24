@@ -18,7 +18,7 @@ export const verifyToken = async (req, res, next) => {
             return res.status(401).json({ message: 'Accès non autorisé, utilisateur non trouvé' });
         }
     } catch (error) {
-        // En cas d'erreur de vérification du token
+    
         console.error('Erreur de vérification du token :', error.message);
         return res.status(401).json({ message: 'Accès non autorisé, token non valide' });
     }

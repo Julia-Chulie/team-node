@@ -32,16 +32,19 @@ const isFormValid = () => {
     passwordValid.value = false
   }
 }
+
 const login = async () => {
   const user = {
     email: email.value,
     password: password.value
   }
- await authStore.login(user)
- router.push('/dashboard')
-    .catch((err) => {
+  try{
+      await authStore.login(user)
+      router.push('/dashboard')
+  } catch(err) {
+      console.log('eeeeeeeeeeeeeeeee',err);
       error.value = err.response?.data.message
-    })
+    }
 
 }
 

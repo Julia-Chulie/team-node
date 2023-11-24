@@ -13,4 +13,3 @@ export  const fetchUserById = async (id) => {
 
     return response.data
 }
-
