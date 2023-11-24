@@ -7,6 +7,10 @@ export const register = async (req,res) => {
     const { password , email , lastname,firstname} = req.body
     console.log(req.body);
     const user = new UserModel(req.body);
+    const userExist = await UserModel.findOne({ email}).exec();
+    if(userExist) {
+        res.status(403).send({error:true,message:'Ce compte existe déja'});
+    }
     console.log(user);
     if(testRegister.testEmail(email) === false){
         res.status(401).send({message:'Le mot de passe doit contenir au moins une majuscule, une minuscule , un chiffre , un caractère special et faire au minimum 8 caractères'});
@@ -29,7 +33,7 @@ export const login = async (req,res) => {
         console.log(req.body);
     const {password,email} = req.body
 
-    const user = await User.findOne({email}).exec();
+    const user = await UserModel.findOne({email}).exec();
 
     if(!user || hashPassword(password) !== user.password){
         res.status(403).send({message:'Identifiants incorrects'});

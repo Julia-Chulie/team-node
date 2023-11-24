@@ -1,21 +1,23 @@
 import { jwtDecode } from "jwt-decode";
 import dotenv from  'dotenv'
-
-export const verifyToken = (req,res,next) => {
-    const token = req.body.verifyToken;
-    const token1 = req.header('Authorization');
-
-    if (!token) {
-        return res.status(401).json({ message: 'Accès non autorisé' });
-    }
-
+import UserModel from "../../models/UserModel";
+export const verifyToken = async (req, res, next) => {
     try {
-        const decodedtoken = jwtDecode.verify(token,process.env.SECRET_HASH)
-        if(decodedtoken.roles = ['ROLE_ADMIN']) {
-            next()
+        const token = req.body.token;
+        const headerToken = req.header('Authorization');
+
+        const decodedToken = jwtDecode.verify(token, process.env.SECRET_HASH);
+        const userId = decodedToken._id;
+        const userExist = await UserModel.findOne({ _id: userId }).exec();
+        if (userExist) {
+            req.user = userExist; 
+            next();
+        } else {
+            return res.status(401).json({ message: 'Accès non autorisé, utilisateur non trouvé' });
         }
     } catch (error) {
-        
+        // En cas d'erreur de vérification du token
+        console.error('Erreur de vérification du token :', error.message);
+        return res.status(401).json({ message: 'Accès non autorisé, token non valide' });
     }
-
-}
+};

@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import securityRouter from "./router/securityRouter.js";
+import userRouter from "./router/userRouter.js";
 
 dotenv.config();
 const PORT = process.env.PORT || 8001;
@@ -11,6 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
  app.use(securityRouter);
+ app.use(userRouter)
 mongoose.connect(process.env.MONGO_DB, {
     useNewUrlParser: true,
     useUnifiedTopology: true
