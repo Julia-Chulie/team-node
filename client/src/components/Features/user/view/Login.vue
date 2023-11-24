@@ -38,7 +38,7 @@ const login = async () => {
     password: password.value
   }
  await authStore.login(user)
- router.push('/')
+ router.push('/dashboard')
     .catch((err) => {
       error.value = err.response?.data.message
     })

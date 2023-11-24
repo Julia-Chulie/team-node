@@ -6,8 +6,7 @@ const authStore = useAuthStore()
 const isAuthenticated = authStore.isAuthenticated
 
 onMounted(() => {
-  console.log(isAuthenticated)
-  if(!isAuthenticated.value) {
+  if (!isAuthenticated) {
     router.push('/login')
   }
 })

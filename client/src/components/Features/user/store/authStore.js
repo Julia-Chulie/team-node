@@ -2,8 +2,7 @@ import {defineStore} from "pinia";
 import authStorageService from "./authStorage";
 import login from '../../../../shared/api/auth.api'
 import {jwtDecode} from "jwt-decode";
-import {fetchCurrentUser, fetchUserById, updateUser} from "@/shared/api/user.api";
-import { useRoute } from "vue-router";
+import {fetchCurrentUser, fetchUserById} from "@/shared/api/user.api";
 
 export const useAuthStore = defineStore('authStore', {
     state: () => ({
@@ -27,6 +26,7 @@ export const useAuthStore = defineStore('authStore', {
         },
     },
 
+
 //    karim.benzema@gmail.com
     actions: {
         async login(user) {
@@ -46,7 +46,8 @@ export const useAuthStore = defineStore('authStore', {
             authStorageService.removeToken();
             this.currentUser = null;
         },
-        
+
+
         async fetchUserById(id) {
             this.userById = await fetchUserById(id)
             if(this.userById){

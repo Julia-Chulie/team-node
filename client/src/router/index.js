@@ -21,12 +21,11 @@ const router = createRouter({
 //   // Continuez la navigation
 //   next();
 // });
-/* 
 router.beforeEach(async () => {
   const authStore = useAuthStore()
   if(!authStore.loaded){
     await authStore.fetchCurrentUser();
   }
-}); */
+});
 
 export default router

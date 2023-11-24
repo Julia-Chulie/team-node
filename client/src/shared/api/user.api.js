@@ -14,9 +14,3 @@ export  const fetchUserById = async (id) => {
     return response.data
 }
 
-export const updateUser = async (user) => {
-    const response = await instance.put(`/users/${user._id}`,user)
-
-    return response.data
-}
-

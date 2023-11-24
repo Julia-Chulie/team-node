@@ -2,7 +2,6 @@
 import { useRouter } from 'vue-router';
 import { useAuthStore } from './Features/user/store/authStore';
 import { onMounted } from 'vue';
-import Dashboard from "@/components/Features/user/view/Dashboard.vue";
 const router = useRouter();
 const authStore = useAuthStore()
 const isAuthenticated = authStore.isAuthenticated
@@ -27,6 +26,11 @@ const isAuthenticated = authStore.isAuthenticated
         </div>
       </div>
     </div>
+  <div v-else class="hero min-h-screen bg-base-200">
+    <router-link to="/dashboard" class="btn btn-primary text-2xl mt-4">
+      <button>Accède au dashboard !</button>
+    </router-link>
+  </div>
 </template>
 <style scoped>
 
