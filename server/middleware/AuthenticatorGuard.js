@@ -7,8 +7,7 @@ export const verifyToken = async (req, res, next) => {
      
         const authHeader = req.headers.authorization;
         const token = authHeader.split(' ')[1];
-        console.log('llaal',token);
-        // const headerToken = req.header('Authorization');
+       
         const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
         const userId = decodedToken._id;
         const userExist = await UserModel.findOne({ _id: userId }).exec();

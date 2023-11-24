@@ -6,7 +6,7 @@ const UserSchema = new Schema({
     lastname: {
         type: String,
          required: true,
-          minLength: 2 ,
+          minLength: 3 ,
           validate: value => {
         if(value ==="" || value.length <= 3){
             throw  new Error('Nom trop court')
@@ -15,7 +15,7 @@ const UserSchema = new Schema({
     firstname: {
         type: String,
         required: true,
-        minLength: 2,
+        minLength: 3,
         validate: value => {
         if(value ==="" || value.length <= 3){
             throw  new Error('Prénom trop court')
