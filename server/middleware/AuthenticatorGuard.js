@@ -1,12 +1,15 @@
-import { jwtDecode } from "jwt-decode";
+import jwt from 'jsonwebtoken';
 import dotenv from  'dotenv'
-import UserModel from "../../models/UserModel";
+import UserModel from "../models/UserModel.js";
 export const verifyToken = async (req, res, next) => {
     try {
-        const token = req.body.token;
-        const headerToken = req.header('Authorization');
-
-        const decodedToken = jwtDecode.verify(token, process.env.SECRET_HASH);
+        console.log('req.body=> ',req.headers.authorization);
+     
+        const authHeader = req.headers.authorization;
+        const token = authHeader.split(' ')[1];
+        console.log('llaal',token);
+        // const headerToken = req.header('Authorization');
+        const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
         const userId = decodedToken._id;
         const userExist = await UserModel.findOne({ _id: userId }).exec();
         if (userExist) {
