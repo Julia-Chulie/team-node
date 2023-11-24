@@ -1,7 +1,8 @@
 import {defineStore} from "pinia";
 import authStorageService from "./authStorage";
 import login from '../../../../shared/api/auth.api'
-import jwtDecode from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
+import {fetchCurrentUser, fetchUserById, updateUser} from "@/shared/api/user.api";
 import { useRoute } from "vue-router";
 
 export const useAuthStore = defineStore('authStore', {
@@ -11,6 +12,7 @@ export const useAuthStore = defineStore('authStore', {
         loaded: false,
         loadedUserById: false,
         loading: false,
+        followedLesson : 0
     }),
 
     getters: {
@@ -23,8 +25,20 @@ export const useAuthStore = defineStore('authStore', {
                 return null;
             }
         },
+
+        getlessonsFollowed: (state) => {
+            const lessonsFollowed = state.currentUser.followedLessons
+            return lessonsFollowed
+        },
     },
-    
+
+    setters: {
+        setFollowedLessonCount() {
+            this.followedLesson = this.currentUser.followedLesson.length;
+        }
+    },
+
+
 //    karim.benzema@gmail.com
     actions: {
         async login(user) {
@@ -34,7 +48,7 @@ export const useAuthStore = defineStore('authStore', {
                 const token = response.data.token;
                 const decodedtoken = jwtDecode(token);
                 authStorageService.saveToken(token);
-                this.currentUser = await fetchUserById(decodedtoken._id)  
+                this.currentUser = await fetchUserById(decodedtoken._id)
 
             } catch (error) {
                 throw error
@@ -45,10 +59,31 @@ export const useAuthStore = defineStore('authStore', {
             this.currentUser = null;
         },
 
+
+        async fetchUserById(id) {
+            this.userById = await fetchUserById(id)
+            if(this.userById){
+                this.loadedUserById = true;
+            }else{
+                this.loadedUserById = false
+            }
+        },
+
+        async updateCurrentUser(user) {
+            try {
+                const response = await updateUser(user)
+                this.fetchCurrentUser();
+                return response.data;
+            } catch (error) {
+                throw error
+            }
+        },
         async fetchCurrentUser() {
             this.currentUser = await fetchCurrentUser();
             this.loaded = true;
-            
+
         }
+
+
     },
 })

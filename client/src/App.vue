@@ -7,7 +7,7 @@ console.log('aaaaaaaaaaaaa',authStore.isAuthenticated);
 </script>
 
 <template>
-  <div>yo</div>
+  <router-view/>
 </template>
 
 <style scoped>
