@@ -1,0 +1,54 @@
+import {defineStore} from "pinia";
+import authStorageService from "./authStorage";
+import login from '../../../../shared/api/auth.api'
+import jwtDecode from "jwt-decode";
+import { useRoute } from "vue-router";
+
+export const useAuthStore = defineStore('authStore', {
+    state: () => ({
+        currentUser: null,
+        userById: null,
+        loaded: false,
+        loadedUserById: false,
+        loading: false,
+    }),
+
+    getters: {
+        isAuthenticated(state) {
+            if (state.currentUser) {
+                return true;
+            } else if (!state.currentUser && state.loaded) {
+                return false;
+            } else {
+                return null;
+            }
+        },
+    },
+    
+//    karim.benzema@gmail.com
+    actions: {
+        async login(user) {
+            try {
+                this.loading = true;
+                const response = await login(user)
+                const token = response.data.token;
+                const decodedtoken = jwtDecode(token);
+                authStorageService.saveToken(token);
+                this.currentUser = await fetchUserById(decodedtoken._id)  
+
+            } catch (error) {
+                throw error
+            }
+        },
+        logout() {
+            authStorageService.removeToken();
+            this.currentUser = null;
+        },
+
+        async fetchCurrentUser() {
+            this.currentUser = await fetchCurrentUser();
+            this.loaded = true;
+            
+        }
+    },
+})
