@@ -2,6 +2,10 @@
 import {onMounted, ref} from 'vue';
 import {useRouter} from "vue-router";
 import register from "../../../../shared/api/register.api"
+import { createToaster } from "@meforma/vue-toaster";
+
+const toaster = createToaster({ /* options */ });
+
 const router = useRouter()
 const message = ref("")
 
@@ -62,13 +66,27 @@ const registerUser = () => {
       .then((data) => {
         console.log(data)
         hasFormBeenValidated.value = true;
-        if(data.message) {
-          message.value = data.message + " \nRedirection vers la page de connexion..."
+        const toasterOptions =  {
+          position: "top-right",
+          duration: 5000,
+          singleton: true,
+          showCloseButtonOnHover: false,
+          iconPack: "fontawesome",
+          icon: "fa-check",
+          theme: "bubble",
+          type: "success",
+          transitionType: "slide",
+          closeOnClick: true,
+          pauseOnHover: true,
+          limit: 1,
+        }
+        if(data.error){
+          toaster.error(data.message, toasterOptions)
+        }else {
+          toaster.success(data.message, toasterOptions)
           setTimeout(() => {
             router.push("/login")
           }, 2000)
-        }else{
-          message.value = data.message
         }
       })
       .catch(err => console.log(err))

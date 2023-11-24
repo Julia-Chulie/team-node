@@ -25,19 +25,7 @@ export const useAuthStore = defineStore('authStore', {
                 return null;
             }
         },
-
-        getlessonsFollowed: (state) => {
-            const lessonsFollowed = state.currentUser.followedLessons
-            return lessonsFollowed
-        },
     },
-
-    setters: {
-        setFollowedLessonCount() {
-            this.followedLesson = this.currentUser.followedLesson.length;
-        }
-    },
-
 
 //    karim.benzema@gmail.com
     actions: {
@@ -58,8 +46,7 @@ export const useAuthStore = defineStore('authStore', {
             authStorageService.removeToken();
             this.currentUser = null;
         },
-
-
+        
         async fetchUserById(id) {
             this.userById = await fetchUserById(id)
             if(this.userById){
