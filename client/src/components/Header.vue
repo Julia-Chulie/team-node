@@ -44,7 +44,7 @@ const currentUserInitials = computed(() => {
       </div>
       <div class="navbar-end " v-if="isAuthenticated">
         <ul class="menu menu-horizontal px-4">
-          <a @click="logout">Déconnexion</a>
+          <a @click="logout" class="btn ">Déconnexion</a>
         </ul>
       </div>
       <div class="navbar-end hidden lg:flex" v-else>

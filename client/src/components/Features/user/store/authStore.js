@@ -56,16 +56,6 @@ export const useAuthStore = defineStore('authStore', {
                 this.loadedUserById = false
             }
         },
-
-        async updateCurrentUser(user) {
-            try {
-                const response = await updateUser(user)
-                this.fetchCurrentUser();
-                return response.data;
-            } catch (error) {
-                throw error
-            }
-        },
         async fetchCurrentUser() {
             this.currentUser = await fetchCurrentUser();
             this.loaded = true;
